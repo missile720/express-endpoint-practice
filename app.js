@@ -40,9 +40,14 @@ app.use(express.json());
 
 app.get('/cars', async function(req, res) {
   try {
-    console.log('/cars/:id')
+    const cars = await req.db.query(
+      `SELECT * FROM car`
+    );
+
+    res.json({ success: true, message: 'Cars retrieved successfully', data: cars[0] });
+    console.log(cars[0])
   } catch (err) {
-    
+    res.json({ success: false, message: err.message, data: null });
   }
 });
 
