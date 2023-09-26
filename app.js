@@ -78,17 +78,24 @@ app.post('/car', async function(req, res) {
   
     res.json({ success: true, message: 'Car successfully created', data: null });
   } catch (err) {
-    res.json({ success: false, message: err, data: null })
+    res.json({ success: false, message: err, data: null });
   }
 });
 
 app.delete('/car/:id', async function(req,res) {
   try {
-    console.log('req.params /car/:id', req.params)
+    let id = req.params.id;
 
-    res.json('success')
+    const query = await req.db.query(
+      `UPDATE car
+      SET deleted_flag = 1
+      WHERE id = ?`,
+      [id]
+    );
+
+    res.json('success');
   } catch (err) {
-
+    res.json({ success: false, message: err, data: null });
   }
 });
 
